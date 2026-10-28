@@ -1247,7 +1247,7 @@ final class Tools {
         { '<', '>' }
     };
 
-    static final Set<SQLDialect>         REQUIRES_BACKSLASH_ESCAPING                = SQLDialect.supportedBy(MARIADB, MYSQL);
+    static final Set<SQLDialect>         REQUIRES_BACKSLASH_ESCAPING                = SQLDialect.supportedBy(CLICKHOUSE, MARIADB, MYSQL);
     static final Set<SQLDialect>         NO_SUPPORT_NULL                            = SQLDialect.supportedBy(CLICKHOUSE, DERBY, FIREBIRD, H2, HSQLDB, TRINO);
     static final Set<SQLDialect>         NO_SUPPORT_NULL_ALTER_TABLE                = SQLDialect.supportedBy(CLICKHOUSE, DERBY, FIREBIRD, HSQLDB, TRINO);
     static final Set<SQLDialect>         NO_SUPPORT_NOT_NULL                        = SQLDialect.supportedBy(CLICKHOUSE, TRINO);

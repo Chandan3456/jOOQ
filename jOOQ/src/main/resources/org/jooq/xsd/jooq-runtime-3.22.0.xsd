@@ -2327,7 +2327,7 @@ Either &lt;input/&gt; or &lt;inputExpression/&gt; must be provided]]></jxb:javad
         -->
 
       <enumeration value="DEFAULT">
-        <annotation><appinfo><jxb:property><jxb:javadoc><![CDATA[Use the database's most sensible default value for ON (MySQL, MariaDB) / OFF (all other databases)]]></jxb:javadoc></jxb:property></appinfo></annotation>
+        <annotation><appinfo><jxb:property><jxb:javadoc><![CDATA[Use the database's most sensible default value for ON (ClickHouse, MySQL, MariaDB) / OFF (all other databases)]]></jxb:javadoc></jxb:property></appinfo></annotation>
       </enumeration>
 
       <enumeration value="ON">

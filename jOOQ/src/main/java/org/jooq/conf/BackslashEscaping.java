@@ -26,7 +26,7 @@ public enum BackslashEscaping {
 
 
     /**
-     * Use the database's most sensible default value for ON (MySQL, MariaDB) / OFF (all other databases)
+     * Use the database's most sensible default value for ON (ClickHouse, MySQL, MariaDB) / OFF (all other databases)
      * 
      */
     DEFAULT,
