@@ -15241,7 +15241,7 @@ final class DefaultParseContext extends AbstractParseContext implements ParseCon
                   + "enum ").append(className).append(" implements org.jooq.EnumType {\n");
 
         for (int i = 0; i < literals.size(); i++)
-            content.append("  E").append(i).append("(\"").append(literals.get(i).replace("\"", "\\\"")).append("\"),\n");
+            content.append("  E").append(i).append("(").append(Tools.stringLiteral(literals.get(i))).append("),\n");
 
         content.append(
                     "  ;\n"
