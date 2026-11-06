@@ -2273,6 +2273,7 @@ public class DefaultBinding<T, U> implements Binding<T, U> {
     }
 
     static final class DefaultDecfloatBinding<U> extends InternalBinding<Decfloat, U> {
+        static final Pattern P_NUMERIC_LITERAL = Pattern.compile("[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?");
 
         DefaultDecfloatBinding(DataType<Decfloat> dataType, Converter<Decfloat, U> converter) {
             super(dataType, converter);
@@ -2295,6 +2296,10 @@ public class DefaultBinding<T, U> implements Binding<T, U> {
                 ctx.render().visit(infinity(ctx, DECFLOAT, true));
             else if (REQUIRES_LITERAL_CAST.contains(ctx.dialect()))
                 ctx.render().visit(field(ctx.render().floatFormat().format(value)).cast(DECFLOAT));
+
+            // Decfloat accepts any string data, so only numeric literals may be rendered as plain SQL
+            else if (!P_NUMERIC_LITERAL.matcher(value.data()).matches())
+                ctx.render().visit(inline(value.data()).cast(DECFLOAT));
             else
                 ctx.render().sql(value.data());
 
