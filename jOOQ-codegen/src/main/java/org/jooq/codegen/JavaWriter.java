@@ -191,13 +191,17 @@ public class JavaWriter extends GeneratorWriter<JavaWriter> {
 
     static String escapeJavadoc(String string) {
 
-        // [#3450] [#4880] [#7693] Must not print */ inside Javadoc
-        return string
-            .replace("/*", "/ *")
-            .replace("*/", "* /")
-            .replace("\\u002a/", "\\u002a /")
-            .replace("*\\u002f", "* \\u002f")
-            .replace("\\u002a\\u002f", "\\u002a \\u002f");
+        // [#3450] [#4880] [#7693] Must not print */ inside Javadoc. The comment
+        // terminator can also be written using the compiler's unicode escapes
+        // for '*' (002a) and '/' (002f), which are decoded before comments are
+        // recognised. The hex digits are case insensitive and the leading 'u'
+        // may be repeated, so replacing only the lower case single-u spellings
+        // left the upper case and multi-u spellings intact. Break the '*' '/'
+        // adjacency for every spelling.
+        string = string.replaceAll("(?i)(\\*|\\\\u+002a)(/|\\\\u+002f)", "$1 $2");
+        string = string.replaceAll("(?i)(/|\\\\u+002f)(\\*|\\\\u+002a)", "$1 $2");
+
+        return string;
     }
 
     public Mode mode() {
