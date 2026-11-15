@@ -5088,7 +5088,7 @@ public class JavaGenerator extends AbstractGenerator {
                     out.println("case object %s extends %s {", identifiers.get(i), className);
                     out.println("override def getLiteral: %s = \"%s\"",
                         String.class,
-                        literals.get(i));
+                        escapeString(literals.get(i)));
                     out.println("}");
                 }
             }
@@ -9860,7 +9860,7 @@ public class JavaGenerator extends AbstractGenerator {
             final String seqTypeFull = getJavaType(sequence.getType(resolver(out)), out);
             final String seqType = out.ref(seqTypeFull);
             final String seqId = getStrategy().getJavaIdentifier(sequence);
-            final String seqName = sequence.getOutputName();
+            final String seqName = escapeString(sequence.getOutputName());
             final String schemaId = generateDefaultSchema(schema)
                 ? out.ref(getStrategy().getFullJavaIdentifier(schema), 2)
                 : null;
@@ -10311,11 +10311,11 @@ public class JavaGenerator extends AbstractGenerator {
 
         if (scala) {
             out.println("%sclass %s extends %s(\"%s\")[[before= with ][separator= with ][%s]] {",
-                visibility(), className, classExtends, catalog.getOutputName(), interfaces);
+                visibility(), className, classExtends, escapeString(catalog.getOutputName()), interfaces);
         }
         else if (kotlin) {
             out.println("%sopen class %s : %s(\"%s\")[[before=, ][%s]] {",
-                visibility(), className, classExtends, catalog.getOutputName(), interfaces);
+                visibility(), className, classExtends, escapeString(catalog.getOutputName()), interfaces);
 
             out.println("%scompanion object {", visibility());
             out.javadoc("The reference instance of <code>%s</code>", catalogName);
@@ -10366,7 +10366,7 @@ public class JavaGenerator extends AbstractGenerator {
         else {
             out.javadoc(NO_FURTHER_INSTANCES_ALLOWED);
             out.println("private %s() {", className);
-            out.println("super(\"%s\");", catalog.getOutputName());
+            out.println("super(\"%s\");", escapeString(catalog.getOutputName()));
             out.println("}");
         }
 
@@ -11282,7 +11282,7 @@ public class JavaGenerator extends AbstractGenerator {
             out.javadoc("Create a new routine call instance");
             out.println("%s%s() {", visibility(), className);
             out.println("super(\"%s\", %s[[before=, ][%s]], %s.comment(\"[[%s]]\")[[before=, ][%s]]" + converterTemplate(returnConverter) + converterTemplate(returnBinding) + ");",
-                routine.getName(), schemaId, packageId, DSL.class, asList(escapeString(comment)), returnTypeRef, returnConverter, returnBinding);
+                escapeString(routine.getName()), schemaId, packageId, DSL.class, asList(escapeString(comment)), returnTypeRef, returnConverter, returnBinding);
 
 
             if (routine.getAllParameters().size() > 0)
