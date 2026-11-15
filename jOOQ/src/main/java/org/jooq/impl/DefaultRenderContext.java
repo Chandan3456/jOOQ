@@ -40,6 +40,7 @@ package org.jooq.impl;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.jooq.ExecuteType.DDL;
+import static org.jooq.SQLDialect.CLICKHOUSE;
 import static org.jooq.SQLDialect.FIREBIRD;
 // ...
 // ...
@@ -699,6 +700,11 @@ class DefaultRenderContext extends AbstractContext<RenderContext> implements Ren
 
             if (literal.length() > maxIdentifierLength(ctx))
                 literal = "alias_" + Internal.hash0(literal);
+
+            // ClickHouse also treats backslashes as escape characters in
+            // quoted identifiers, so they must be escaped before quotes
+            if (family == CLICKHOUSE && literal.indexOf('\\') > -1)
+                literal = StringUtils.replace(literal, "\\", "\\\\");
 
             // [#4922] This micro optimisation does seem to have a significant
             //         effect as the replace call can be avoided in almost all
