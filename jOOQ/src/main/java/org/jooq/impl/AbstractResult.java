@@ -1350,6 +1350,26 @@ abstract class AbstractResult<R extends Record> extends AbstractFormattable impl
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+            // [#4592] Prevent OWASP attack vectors when parsing XML content
+            try {
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            }
+            catch (ParserConfigurationException ignore) {}
+
+            try {
+                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            }
+            catch (ParserConfigurationException ignore) {}
+
+            try {
+                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            }
+            catch (ParserConfigurationException ignore) {}
+
+            factory.setXIncludeAware(false);
+            factory.setExpandEntityReferences(false);
+
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.newDocument();
 
